@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+
+<section class="cabecalho-pagina">
+  <h1><%= titulo %></h1>
+  <p class="sutil">Os campos marcados com * são obrigatórios.</p>
+</section>
+
+<form action="<%= acao %>" method="POST" class="cartao formulario" novalidate>
+  <div class="campo <%= erros.titulo ? 'tem-erro' : '' %>">
+    <label for="titulo">Título *</label>
+    <input type="text" id="titulo" name="titulo" value="<%= tarefa.titulo %>" placeholder="Ex.: Entregar lista de exercícios" maxlength="100">
+    <% if (erros.titulo) { %><p class="erro"><%= erros.titulo %></p><% } %>
+  </div>
+
+  <div class="campo <%= erros.disciplina ? 'tem-erro' : '' %>">
+    <label for="disciplina">Disciplina *</label>
+    <input type="text" id="disciplina" name="disciplina" value="<%= tarefa.disciplina %>" placeholder="Ex.: Programação Web" maxlength="80">
+    <% if (erros.disciplina) { %><p class="erro"><%= erros.disciplina %></p><% } %>
+  </div>
+
+  <div class="campo <%= erros.descricao ? 'tem-erro' : '' %>">
+    <label for="descricao">Descrição</label>
+    <textarea id="descricao" name="descricao" rows="5" placeholder="Detalhes, prazo, materiais necessários..." maxlength="500"><%= tarefa.descricao %></textarea>
+    <% if (erros.descricao) { %><p class="erro"><%= erros.descricao %></p><% } %>
+  </div>
+
+  <div class="acoes-form">
+    <button type="submit" class="btn btn-primario"><%= botao %></button>
+    <a href="/" class="btn btn-suave">Cancelar</a>
+  </div>
+</form>
+
+<%- include('partials/footer') %>

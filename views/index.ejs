@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+
+<section class="cabecalho-pagina">
+  <h1>Minhas tarefas</h1>
+  <p class="sutil">Organize o que precisa ser entregue e acompanhe o que já foi feito.</p>
+</section>
+
+<nav class="filtros" aria-label="Filtrar tarefas">
+  <a href="/" class="filtro <%= filtro === 'todas' ? 'ativo' : '' %>">
+    Todas <span class="contador"><%= totais.todas %></span>
+  </a>
+  <a href="/?filtro=pendente" class="filtro <%= filtro === 'pendente' ? 'ativo' : '' %>">
+    Pendentes <span class="contador"><%= totais.pendentes %></span>
+  </a>
+  <a href="/?filtro=concluida" class="filtro <%= filtro === 'concluida' ? 'ativo' : '' %>">
+    Concluídas <span class="contador"><%= totais.concluidas %></span>
+  </a>
+</nav>
+
+<% if (tarefas.length === 0) { %>
+  <section class="vazio">
+    <% if (totais.todas === 0) { %>
+      <h2>Nenhuma tarefa cadastrada</h2>
+      <p>Cadastre sua primeira tarefa para começar a se organizar.</p>
+      <a href="/tarefas/nova" class="btn btn-primario">Cadastrar tarefa</a>
+    <% } else { %>
+      <h2>Nada por aqui</h2>
+      <p>Nenhuma tarefa corresponde a este filtro.</p>
+      <a href="/" class="btn btn-suave">Ver todas as tarefas</a>
+    <% } %>
+  </section>
+<% } else { %>
+  <ul class="lista">
+    <% tarefas.forEach((t) => { %>
+      <li class="cartao tarefa <%= t.status === 'concluida' ? 'feita' : '' %>">
+        <div class="tarefa-info">
+          <a href="/tarefas/<%= t.id %>" class="tarefa-titulo"><%= t.titulo %></a>
+          <div class="tarefa-meta">
+            <span class="disciplina"><%= t.disciplina %></span>
+            <span class="selo <%= t.status %>">
+              <%= t.status === 'concluida' ? 'Concluída' : 'Pendente' %>
+            </span>
+          </div>
+        </div>
+        <div class="acoes">
+          <a href="/tarefas/<%= t.id %>" class="btn btn-suave">Detalhes</a>
+          <a href="/tarefas/<%= t.id %>/editar" class="btn btn-suave">Editar</a>
+          <% if (t.status === 'pendente') { %>
+            <form action="/tarefas/<%= t.id %>/concluir" method="POST">
+              <button type="submit" class="btn btn-primario">Concluir</button>
+            </form>
+          <% } %>
+          <a href="/tarefas/<%= t.id %>/excluir" class="btn btn-perigo">Excluir</a>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<%- include('partials/footer') %>
